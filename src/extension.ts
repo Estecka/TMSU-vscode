@@ -2,6 +2,7 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import ShowTags from './commands/ShowTags';
+import TagEditor from './ContentProviders/TagEditor';
 
 
 // this method is called when your extension is activated
@@ -17,6 +18,7 @@ export function activate(context: vscode.ExtensionContext) {
 	// The commandId parameter must match the command field in package.json
 	context.subscriptions.push(
 		vscode.commands.registerCommand('tmsu-gui.showTags', ShowTags),
+		vscode.workspace.registerTextDocumentContentProvider("tmsu-tags", new TagEditor())
 	);
 }
 
