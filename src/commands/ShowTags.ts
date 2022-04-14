@@ -14,6 +14,6 @@ export default async function ShowTags(fileUri:any){
 	else {
 		const tmsuUri = fileUri.with({scheme: "tmsu-tags"});
 		const doc = await vscode.workspace.openTextDocument(tmsuUri);
-		await vscode.window.showTextDocument(doc, { preview: false} );
+		await vscode.window.showTextDocument(doc, { preview: true} );
 	}
 };
