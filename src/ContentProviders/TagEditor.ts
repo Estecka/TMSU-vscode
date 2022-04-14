@@ -1,26 +1,35 @@
+import { win32 } from 'path';
 import * as vscode from 'vscode';
 import * as shell from '../shell'
 
 export default class TagEditor implements vscode.TextDocumentContentProvider {
 	private result?:shell.ExecResult;
 	
-	ondidChangeEmitter = new vscode.EventEmitter<vscode.Uri>();
-	onDidChange = this.ondidChangeEmitter.event;
+	public ondidChangeEmitter = new vscode.EventEmitter<vscode.Uri>();
+	public onDidChange = this.ondidChangeEmitter.event;
 	
-	provideTextDocumentContent(uri: vscode.Uri, token: vscode.CancellationToken): vscode.ProviderResult<string> {
+	public provideTextDocumentContent(uri: vscode.Uri, token: vscode.CancellationToken): vscode.ProviderResult<string> {
 		if (!this.result){
 			const workspace = vscode.workspace.getWorkspaceFolder(uri.with({scheme: "file"}));
 			if (!workspace) {
 				vscode.window.showErrorMessage(`Workspace not found for uri: ${uri.fsPath}`);
+				//TODO: use the file's directory instead.
 				return ""
 			}
-			shell.Exec(`cd ${workspace.uri.fsPath} && tmsu tags ${uri.fsPath}`).then((r)=>{
-				this.result = r;
-				this.ondidChangeEmitter.fire(uri);
-			})
-			return `${uri}\nLoading tags...`
+			else {
+				shell.Exec(`cd ${workspace.uri.fsPath} && tmsu tags ${uri.fsPath}`).then((r)=>{
+					this.result = r;
+					this.ondidChangeEmitter.fire(uri);
+				})
+				return `Loading tags...`
+			}
 		}
 
-		return `${this.result.stdout}\n${this.result.stderr}`;
+		if (this.result.err){
+			vscode.window.showErrorMessage(this.result.err.message);
+			return this.result.stderr;
+		}
+
+		return this.result.stdout;
 	}
 }
