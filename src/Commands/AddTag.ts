@@ -1,5 +1,5 @@
 import * as vscode from 'vscode'
-import { basename, dirname } from 'path';
+import * as shell from '../shell';
 
 export default async function AddTag(files?:vscode.Uri[]|vscode.Uri, tag?:string){
 	if (files instanceof vscode.Uri)
@@ -19,15 +19,13 @@ export default async function AddTag(files?:vscode.Uri[]|vscode.Uri, tag?:string
 	}
 
 	// Figure out which workspaces to work with
-	let workspaces = new Set<string>();
+	let workspace = shell.GetContext(files[0]);
 	for (let uri of files){
-		let wp = vscode.workspace.getWorkspaceFolder(uri)?.uri.fsPath ?? dirname(uri.fsPath);
-		workspaces.add(wp);
-			
-	}
-	if (workspaces.size !== 1){
-		vscode.window.showErrorMessage("Unable to single out a shared workspace for all files");
-		return;
+		let wp = shell.GetContext(uri);
+		if (workspace !== wp){
+			vscode.window.showErrorMessage("Unable to single out a shared workspace for all files");
+			return;
+		}
 	}
 
 	// Repetitively ask for tags until no tag is entered.
@@ -37,6 +35,10 @@ export default async function AddTag(files?:vscode.Uri[]|vscode.Uri, tag?:string
 			placeHolder: "tag",
 			ignoreFocusOut: true,
 		})
-		tag && vscode.window.showInformationMessage(tag);
+		if (tag){
+			const args = files.map(uri=>uri.fsPath);
+			args.push(`--tags='${tag}'`);
+			shell.TmsuExec(workspace!, "tag", args);
+		}
 	} while (tag !== undefined);
 }

@@ -16,12 +16,17 @@ export function Exec(command:string) : Promise<ExecResult> {
 	});
 }
 
+export function GetContext(uri:vscode.Uri) : string {
+	return vscode.workspace.getWorkspaceFolder(uri)?.uri?.fsPath ?? path.dirname(uri.fsPath);
+}
+
 export type tmsuVerb = "files"|"tag"|"tags"|"untag";
 
-export function TmsuExec(context:vscode.Uri, verb:tmsuVerb, args:string[] = []) : Promise<ExecResult> {
-	const dir = vscode.workspace.getWorkspaceFolder(context)?.uri?.fsPath ?? path.dirname(context.fsPath);
+export function TmsuExec(context:vscode.Uri|string, verb:tmsuVerb, args:string[] = []) : Promise<ExecResult> {
+	if (context instanceof vscode.Uri)
+		context = GetContext(context);
 
-	let command = `cd "${dir}" && tmsu ${verb}`;
+	let command = `cd "${context}" && tmsu ${verb}`;
 	for (let arg of args)
 		command += ` "${arg}"`;
 
