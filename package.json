@@ -10,6 +10,7 @@
 		"Other"
 	],
 	"activationEvents": [
+		"onView:tmsu-gui.tagView",
 		"onCommand:tmsu-gui.showTags",
 		"onCommand:tmsu-gui.addTag"
 	],
@@ -31,6 +32,14 @@
 					"command": "tmsu-gui.showTags",
 					"when": "resourceScheme == file",
 					"group": "navigation"
+				}
+			]
+		},
+		"views": {
+			"explorer": [
+				{
+					"id": "tmsu-gui.tagView",
+					"name": "TMSU Tag View"
 				}
 			]
 		}

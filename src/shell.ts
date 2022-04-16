@@ -32,3 +32,18 @@ export function TmsuExec(context:vscode.Uri|string, verb:tmsuVerb, args:string[]
 
 	return Exec(command);
 }
+
+export function ParseTags(stdout:string, uri:vscode.Uri) : string[]|undefined{
+	if (!stdout.startsWith(uri.fsPath+":")){
+		console.warn("Expected:", uri.fsPath+":")
+		return undefined;
+	}
+	return stdout.substring(uri.fsPath.length + 1).trim().split(' ');
+}
+
+export async function GetTags(file:vscode.Uri): Promise<string[]|ExecResult> {
+	const r = await TmsuExec(file, 'tags', [file.fsPath]);
+	if (r.err)
+		return r;
+	return ParseTags(r.stdout, file) ?? r;
+}

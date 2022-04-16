@@ -3,7 +3,7 @@
 import * as vscode from 'vscode';
 import AddTag from './Commands/AddTag';
 import ShowTags from './Commands/ShowTags';
-import TagEditor from './ContentProviders/TagEditor';
+import TagView from './TreeView/TagView';
 
 
 // this method is called when your extension is activated
@@ -20,7 +20,7 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
 		vscode.commands.registerCommand('tmsu-gui.showTags', ShowTags),
 		vscode.commands.registerCommand('tmsu-gui.addTag', AddTag),
-		vscode.workspace.registerTextDocumentContentProvider("tmsu-tags", new TagEditor()),
+		vscode.window.registerTreeDataProvider("tmsu-gui.tagView", new TagView()),
 	);
 }
 
