@@ -32,13 +32,19 @@ export default async function AddTag(files?:vscode.Uri[]|vscode.Uri, tag?:string
 	do {
 		tag = await vscode.window.showInputBox({
 			prompt: "Pick a tag to add to the files.",
-			placeHolder: "tag",
+			placeHolder: "one tag",
 			ignoreFocusOut: true,
 		})
 		if (tag){
 			const args = files.map(uri=>uri.fsPath);
 			args.push(`--tags='${tag}'`);
-			shell.TmsuExec(workspace!, "tag", args);
+			shell.TmsuExec(workspace!, "tag", args).then(r=>{
+				if (!r.err)
+					vscode.window.showInformationMessage(`Tagged with ${tag}`);
+				else{
+					vscode.window.showErrorMessage(`Failed to add tag: ${r.err?.message}`);
+				}
+			});
 		}
 	} while (tag !== undefined);
 }
