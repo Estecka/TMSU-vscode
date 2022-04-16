@@ -1,8 +1,6 @@
 import * as vscode from 'vscode';
 
 export default async function ShowTags(fileUri:any){
-	vscode.window.showInformationMessage(`Show Tags: ${fileUri}`);
-
 	if (!(fileUri instanceof vscode.Uri)){
 		vscode.window.showErrorMessage(`Uri type unknown.`);
 		console.error(fileUri);

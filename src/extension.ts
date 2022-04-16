@@ -1,7 +1,8 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import ShowTags from './commands/ShowTags';
+import AddTag from './Commands/AddTag';
+import ShowTags from './Commands/ShowTags';
 import TagEditor from './ContentProviders/TagEditor';
 
 
@@ -18,7 +19,8 @@ export function activate(context: vscode.ExtensionContext) {
 	// The commandId parameter must match the command field in package.json
 	context.subscriptions.push(
 		vscode.commands.registerCommand('tmsu-gui.showTags', ShowTags),
-		vscode.workspace.registerTextDocumentContentProvider("tmsu-tags", new TagEditor())
+		vscode.commands.registerCommand('tmsu-gui.addTag', AddTag),
+		vscode.workspace.registerTextDocumentContentProvider("tmsu-tags", new TagEditor()),
 	);
 }
 
