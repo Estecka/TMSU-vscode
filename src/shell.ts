@@ -41,9 +41,16 @@ export function ParseTags(stdout:string, uri:vscode.Uri) : string[]|undefined{
 	return stdout.substring(uri.fsPath.length + 1).trim().split(' ');
 }
 
-export async function GetTags(file:vscode.Uri): Promise<string[]|ExecResult> {
+export async function GetTagsForfile(file:vscode.Uri): Promise<string[]|ExecResult> {
 	const r = await TmsuExec(file, 'tags', [file.fsPath]);
 	if (r.err)
 		return r;
 	return ParseTags(r.stdout, file) ?? r;
+}
+
+export async function GetAllTags(context:vscode.Uri) : Promise<string[]|ExecResult>{
+	const r = await TmsuExec(context, 'tags');
+	if (r.err)
+		return r;
+	return r.stdout.split('\n').filter((tag)=>tag.trim());
 }

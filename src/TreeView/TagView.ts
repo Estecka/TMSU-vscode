@@ -24,7 +24,7 @@ export default class TagView implements vscode.TreeDataProvider<TagViewElt>{
 		if (!element)
 			return Array.from(TagView._files.values());
 		else if (element instanceof vscode.Uri){
-			const r = await shell.GetTags(element);
+			const r = await shell.GetTagsForfile(element);
 			if (Array.isArray(r))
 				return r;
 			else

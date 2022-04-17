@@ -1,7 +1,8 @@
 import * as vscode from 'vscode'
 import * as shell from '../shell';
+import { ShowTagPicker } from './ShowTagPicker';
 
-export default async function AddTag(files?:vscode.Uri[]|vscode.Uri, tag?:string){
+export default async function AddTag(files?:vscode.Uri[]|vscode.Uri){
 	if (files instanceof vscode.Uri)
 		files = [files];
 
@@ -29,22 +30,16 @@ export default async function AddTag(files?:vscode.Uri[]|vscode.Uri, tag?:string
 	}
 
 	// Repetitively ask for tags until no tag is entered.
-	do {
-		tag = await vscode.window.showInputBox({
-			prompt: "Pick a tag to add to the files.",
-			placeHolder: "one tag",
-			ignoreFocusOut: true,
-		})
-		if (tag){
-			const args = files.map(uri=>uri.fsPath);
-			args.push(`--tags='${tag}'`);
-			shell.TmsuExec(workspace!, "tag", args).then(r=>{
-				if (!r.err)
-					vscode.window.showInformationMessage(`Tagged with ${tag}`);
-				else{
-					vscode.window.showErrorMessage(`Failed to add tag: ${r.err?.message}`);
-				}
-			});
-		}
-	} while (tag !== undefined);
+	let tag:string|undefined;
+	while(tag = await ShowTagPicker(files[0])) {
+		const args = files.map(uri=>uri.fsPath);
+		args.push(`--tags='${tag}'`);
+		shell.TmsuExec(workspace, "tag", args).then(r=>{
+			if (!r.err)
+				vscode.window.showInformationMessage(`Tagged: ${tag}`);
+			else {
+				vscode.window.showErrorMessage(`Failed to add tag.\n${r.err?.message}`);
+			}
+		});
+	}
 }
