@@ -19,11 +19,17 @@
 		"commands": [
 			{
 				"command": "tmsu-gui.showTags",
-				"title": "Show TMSU tags"
+				"title": "TMSU: Show tags",
+				"icon": "$(tag)"
 			},
 			{
 				"command": "tmsu-gui.addTag",
-				"title": "Add TMSU tag"
+				"title": "TMSU: Add tag"
+			},
+			{
+				"command": "tmsu-gui.refreshTagView",
+				"title": "TMSU: Refresh Tag View",
+				"icon": "$(refresh)"
 			}
 		],
 		"menus": {
@@ -31,6 +37,13 @@
 				{
 					"command": "tmsu-gui.showTags",
 					"when": "resourceScheme == file",
+					"group": "navigation"
+				}
+			],
+			"view/title": [
+				{
+					"command": "tmsu-gui.refreshTagView",
+					"when": "view == tmsu-gui.tagView",
 					"group": "navigation"
 				}
 			]

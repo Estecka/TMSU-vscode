@@ -1,5 +1,6 @@
 import * as vscode from 'vscode'
 import * as shell from '../shell';
+import TagView from '../TreeView/TagView';
 import { ShowTagPicker } from './ShowTagPicker';
 
 export default async function AddTag(files?:vscode.Uri[]|vscode.Uri){
@@ -35,8 +36,10 @@ export default async function AddTag(files?:vscode.Uri[]|vscode.Uri){
 		const args = files.map(uri=>uri.fsPath);
 		args.push(`--tags='${tag}'`);
 		shell.TmsuExec(workspace, "tag", args).then(r=>{
-			if (!r.err)
+			if (!r.err) {
 				vscode.window.showInformationMessage(`Tagged: ${tag}`);
+				TagView.Refresh();
+			}
 			else {
 				vscode.window.showErrorMessage(`Failed to add tag.\n${r.err?.message}`);
 			}

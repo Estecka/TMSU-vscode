@@ -20,6 +20,7 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
 		vscode.commands.registerCommand('tmsu-gui.showTags', ShowTags),
 		vscode.commands.registerCommand('tmsu-gui.addTag', AddTag),
+		vscode.commands.registerCommand('tmsu-gui.refreshTagView', TagView.Refresh),
 		vscode.window.registerTreeDataProvider("tmsu-gui.tagView", new TagView()),
 	);
 }

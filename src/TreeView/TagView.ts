@@ -10,6 +10,9 @@ export default class TagView implements vscode.TreeDataProvider<TagViewElt>{
 	private static readonly _onDidChangeTreeData = new vscode.EventEmitter<void>();
 	public readonly onDidChangeTreeData = TagView._onDidChangeTreeData.event;
 
+	public static Refresh(){
+		TagView._onDidChangeTreeData.fire();
+	}
 	public static ShowFile(file:vscode.Uri){
 		TagView._files.set(file.fsPath, file);
 		TagView._onDidChangeTreeData.fire();
