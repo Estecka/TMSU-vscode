@@ -38,7 +38,7 @@ export function ParseTags(stdout:string, uri:vscode.Uri) : string[]|undefined{
 		console.warn("Expected:", uri.fsPath+":")
 		return undefined;
 	}
-	return stdout.substring(uri.fsPath.length + 1).trim().split(' ');
+	return stdout.substring(uri.fsPath.length + 1).split(' ').filter(t=>t.trim());
 }
 
 export async function GetTagsForfile(file:vscode.Uri): Promise<string[]|ExecResult> {
