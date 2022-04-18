@@ -20,11 +20,17 @@
 			{
 				"command": "tmsu-gui.showTags",
 				"title": "TMSU: Show tags",
-				"icon": "$(tag)"
+				"icon": "$(bookmark)"
 			},
 			{
 				"command": "tmsu-gui.addTag",
-				"title": "TMSU: Add tag"
+				"title": "TMSU: Add tag",
+				"icon": "$(tag-add)"
+			},
+			{
+				"command": "tmsu-gui.removeTag",
+				"title": "TMSU: Remove Tag",
+				"icon": "$(trashcan)"
 			},
 			{
 				"command": "tmsu-gui.refreshTagView",
@@ -38,6 +44,18 @@
 					"command": "tmsu-gui.showTags",
 					"when": "resourceScheme == file",
 					"group": "navigation"
+				}
+			],
+			"view/item/context": [
+				{
+					"command": "tmsu-gui.removeTag",
+					"when": "viewItem == tmsu-gui.tagView.tag",
+					"group": "inline"
+				},
+				{
+					"command": "tmsu-gui.addTag",
+					"when": "viewItem == tmsu-gui.tagView.file",
+					"group": "inline"
 				}
 			],
 			"view/title": [

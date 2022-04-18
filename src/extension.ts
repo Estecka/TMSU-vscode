@@ -2,6 +2,7 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import AddTag from './Commands/AddTag';
+import RemoveTag from './Commands/RemoveTag';
 import ShowTags from './Commands/ShowTags';
 import TagView from './TreeView/TagView';
 
@@ -20,6 +21,7 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
 		vscode.commands.registerCommand('tmsu-gui.showTags', ShowTags),
 		vscode.commands.registerCommand('tmsu-gui.addTag', AddTag),
+		vscode.commands.registerCommand('tmsu-gui.removeTag', RemoveTag),
 		vscode.commands.registerCommand('tmsu-gui.refreshTagView', TagView.Refresh),
 		vscode.window.registerTreeDataProvider("tmsu-gui.tagView", new TagView()),
 	);

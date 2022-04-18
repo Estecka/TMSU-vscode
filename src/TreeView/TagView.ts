@@ -1,9 +1,37 @@
 import * as vscode from 'vscode'
 import * as shell from '../shell';
 
-type tag = string;
-type TagViewElt = vscode.Uri|tag;
+export class AttachedTag {
+	constructor(
+		public fileUri:vscode.Uri,
+		public tagName:string,
+	){}
+};
 
+class TagItem extends vscode.TreeItem {
+	public readonly iconPath = new vscode.ThemeIcon("tag");
+	public readonly contextValue = "tmsu-gui.tagView.tag";
+	public readonly label:string;
+	public readonly resourceUri: vscode.Uri;
+
+	constructor(tag:AttachedTag){
+		super(tag.tagName);
+		this.label = tag.tagName;
+		this.resourceUri = tag.fileUri;
+		this.id = `${tag.fileUri.fsPath}#${tag.tagName}`;
+	}
+}
+class FileItem extends vscode.TreeItem {
+	public readonly iconPath = vscode.ThemeIcon.File;
+	public readonly contextValue = "tmsu-gui.tagView.file";
+	public collapsibleState = vscode.TreeItemCollapsibleState.Expanded;
+	constructor(uri:vscode.Uri){
+		super(uri);
+		this.id = uri.fsPath;
+	}
+}
+
+type TagViewElt = vscode.Uri|AttachedTag;
 export default class TagView implements vscode.TreeDataProvider<TagViewElt>{
 	private static _files = new Map<string, vscode.Uri>();
 
@@ -29,7 +57,7 @@ export default class TagView implements vscode.TreeDataProvider<TagViewElt>{
 		else if (element instanceof vscode.Uri){
 			const r = await shell.GetTagsForfile(element);
 			if (Array.isArray(r))
-				return r;
+				return r.map( tag=>new AttachedTag(element, tag) );
 			else
 				vscode.window.showErrorMessage(r.err?.message ?? "")
 		}
@@ -37,8 +65,8 @@ export default class TagView implements vscode.TreeDataProvider<TagViewElt>{
 
 	getTreeItem(element: TagViewElt): vscode.TreeItem | Thenable<vscode.TreeItem> {
 		if (element instanceof vscode.Uri)
-			return new vscode.TreeItem(element, vscode.TreeItemCollapsibleState.Expanded);
+			return new FileItem(element)
 		else
-			return new vscode.TreeItem(element);
+			return new TagItem(element);
 	}
 }
