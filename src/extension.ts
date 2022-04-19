@@ -4,6 +4,7 @@ import * as vscode from 'vscode';
 import AddTag from './Commands/AddTag';
 import RemoveTag from './Commands/RemoveTag';
 import ShowTags from './Commands/ShowTags';
+import TagExplorer from './TreeView/TagExplorer';
 import TagView from './TreeView/TagView';
 
 
@@ -23,7 +24,9 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand('tmsu-gui.addTag', AddTag),
 		vscode.commands.registerCommand('tmsu-gui.removeTag', RemoveTag),
 		vscode.commands.registerCommand('tmsu-gui.refreshTagView', TagView.Refresh),
+		vscode.commands.registerCommand('tmsu-gui.refreshTagExplorer', TagExplorer.Refresh),
 		vscode.window.registerTreeDataProvider("tmsu-gui.tagView", new TagView()),
+		vscode.window.registerTreeDataProvider("tmsu-gui.tagExplorer", new TagExplorer()),
 	);
 }
 

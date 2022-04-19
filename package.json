@@ -11,6 +11,7 @@
 	],
 	"activationEvents": [
 		"onView:tmsu-gui.tagView",
+		"onView:tmsu-gui.tagExplorer",
 		"onCommand:tmsu-gui.showTags",
 		"onCommand:tmsu-gui.addTag"
 	],
@@ -35,6 +36,11 @@
 			{
 				"command": "tmsu-gui.refreshTagView",
 				"title": "TMSU: Refresh Tag View",
+				"icon": "$(refresh)"
+			},
+			{
+				"command": "tmsu-gui.refreshTagExplorer",
+				"title": "TMSU: Refresh Tag Explorer",
 				"icon": "$(refresh)"
 			}
 		],
@@ -63,6 +69,11 @@
 					"command": "tmsu-gui.refreshTagView",
 					"when": "view == tmsu-gui.tagView",
 					"group": "navigation"
+				},
+				{
+					"command": "tmsu-gui.refreshTagExplorer",
+					"when": "view == tmsu-gui.tagExplorer",
+					"group": "navigation"
 				}
 			]
 		},
@@ -71,6 +82,10 @@
 				{
 					"id": "tmsu-gui.tagView",
 					"name": "TMSU Tag View"
+				},
+				{
+					"id": "tmsu-gui.tagExplorer",
+					"name": "TMSU Tag Explorer"
 				}
 			]
 		}

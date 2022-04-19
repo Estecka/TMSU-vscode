@@ -1,6 +1,7 @@
 import * as vscode from 'vscode'
 import * as shell from '../shell';
-import TagView, { AttachedTag } from "../TreeView/TagView";
+import { AttachedTag } from '../tmsu';
+import TagView from "../TreeView/TagView";
 
 export default async function RemoveTag(arg:any){
 	if (!(arg instanceof AttachedTag)){

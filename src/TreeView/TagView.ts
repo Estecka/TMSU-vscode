@@ -1,12 +1,6 @@
 import * as vscode from 'vscode'
 import * as shell from '../shell';
-
-export class AttachedTag {
-	constructor(
-		public fileUri:vscode.Uri,
-		public tagName:string,
-	){}
-};
+import { AttachedTag } from '../tmsu';
 
 class TagItem extends vscode.TreeItem {
 	public readonly iconPath = new vscode.ThemeIcon("tag");
@@ -63,7 +57,7 @@ export default class TagView implements vscode.TreeDataProvider<TagViewElt>{
 		}
 	}
 
-	getTreeItem(element: TagViewElt): vscode.TreeItem | Thenable<vscode.TreeItem> {
+	getTreeItem(element: TagViewElt): vscode.TreeItem {
 		if (element instanceof vscode.Uri)
 			return new FileItem(element)
 		else
