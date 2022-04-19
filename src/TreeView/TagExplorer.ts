@@ -5,12 +5,10 @@ import { AttachedTag } from '../tmsu';
 class FileItem extends vscode.TreeItem {
 	public readonly iconPath = vscode.ThemeIcon.File;
 	public readonly contextValue = "tmsu-gui.tagExplorer.file";
-	public readonly label:string;
 	public readonly resourceUri: vscode.Uri;
 
 	constructor(tag:AttachedTag){
-		super(tag.tagName);
-		this.label = tag.tagName;
+		super(tag.fileUri);
 		this.resourceUri = tag.fileUri;
 		this.id = `${tag.fileUri.fsPath}#${tag.tagName}`;
 	}
@@ -36,18 +34,24 @@ export default class TagExplorer implements vscode.TreeDataProvider<TagExplorerE
 	}
 
 	async getChildren(element?: TagExplorerElt): Promise<TagExplorerElt[]|undefined> {
+		const workspace = vscode.workspace.workspaceFolders?.[0]?.uri;
+		if (!workspace){
+			vscode.window.showWarningMessage("No workspace found for Tag Explorer");
+			return undefined;
+		}
+
 		if (!element) {
-			const context = vscode.workspace.workspaceFolders?.[0]?.uri;
-			if (!context)
-				return undefined;
-			const r = await shell.GetAllTags(context);
+			const r = await shell.GetAllTags(workspace);
 			if (Array.isArray(r))
 				return r;
 			else
 				vscode.window.showErrorMessage(r.err?.message ?? "")
 		}
-		else{
-			// return files for tag.
+		else if (typeof(element) === "string") {
+			const r = await shell.GetFilesForQuery(workspace, element);
+			if (Array.isArray(r))
+				return r.map( uri=>new AttachedTag(uri, element) );
+			else vscode.window.showErrorMessage(r.err?.message ?? "");
 		}
 	}
 
