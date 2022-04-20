@@ -13,7 +13,7 @@ class FileItem extends vscode.TreeItem {
 		this.id = `${tag.fileUri.fsPath}#${tag.tagName}`;
 		this.command = {
 			title: "Open file",
-			command: "vscode.open",
+			command: "tmsu-gui.open",
 			arguments: [tag.fileUri],
 		};
 	}

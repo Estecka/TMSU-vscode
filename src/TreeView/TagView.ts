@@ -27,6 +27,7 @@ class FileItem extends vscode.TreeItem {
 
 type TagViewElt = vscode.Uri|AttachedTag;
 export default class TagView implements vscode.TreeDataProvider<TagViewElt>{
+	private static _preview?:vscode.Uri
 	private static _files = new Map<string, vscode.Uri>();
 
 	private static readonly _onDidChangeTreeData = new vscode.EventEmitter<void>();
@@ -35,8 +36,16 @@ export default class TagView implements vscode.TreeDataProvider<TagViewElt>{
 	public static Refresh(){
 		TagView._onDidChangeTreeData.fire();
 	}
+	public static SetPreview(file?:vscode.Uri){
+		if (file && TagView._files.has(file?.fsPath))
+			file = undefined;
+		TagView._preview = file;
+		TagView._onDidChangeTreeData.fire();
+	}
 	public static ShowFile(file:vscode.Uri){
 		TagView._files.set(file.fsPath, file);
+		if (TagView._preview?.fsPath == file.fsPath)
+			TagView._preview = undefined;
 		TagView._onDidChangeTreeData.fire();
 		vscode.commands.executeCommand("tmsu-gui.tagView.focus");
 	}
@@ -46,8 +55,12 @@ export default class TagView implements vscode.TreeDataProvider<TagViewElt>{
 	}
 
 	async getChildren(element?: TagViewElt): Promise<TagViewElt[]|undefined> {
-		if (!element)
-			return Array.from(TagView._files.values());
+		if (!element) {
+			let elts = Array.from(TagView._files.values());
+			if (TagView._preview)
+				elts.unshift(TagView._preview);
+			return elts;
+		}
 		else if (element instanceof vscode.Uri){
 			const r = await shell.GetTagsForFile(element);
 			if (Array.isArray(r))

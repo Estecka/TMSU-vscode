@@ -27,6 +27,10 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand('tmsu-gui.refreshTagExplorer', TagExplorer.Refresh),
 		vscode.window.registerTreeDataProvider("tmsu-gui.tagView", new TagView()),
 		vscode.window.registerTreeDataProvider("tmsu-gui.tagExplorer", new TagExplorer()),
+		vscode.commands.registerCommand('tmsu-gui.open', (uri:vscode.Uri)=>{
+			vscode.commands.executeCommand("vscode.open", uri);
+			TagView.SetPreview(uri);
+		}),
 	);
 }
 

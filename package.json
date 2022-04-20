@@ -24,6 +24,10 @@
 				"icon": "$(bookmark)"
 			},
 			{
+				"command": "tmsu-gui.open",
+				"title": "TMSU: Open"
+			},
+			{
 				"command": "tmsu-gui.addTag",
 				"title": "TMSU: Add tag",
 				"icon": "$(tag-add)"
