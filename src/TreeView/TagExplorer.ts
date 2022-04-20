@@ -29,6 +29,17 @@ class TagItem extends vscode.TreeItem {
 	}
 }
 
+const nontag = ".";
+class UntaggedItem extends vscode.TreeItem {
+	public readonly label  = "untagged"
+	public readonly contextValue = "tmsu-gui.tagExplorer.untagged";
+	public collapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
+	constructor(){
+		super(nontag);
+	}
+}
+
+
 type TagExplorerElt = string|AttachedTag;
 export default class TagExplorer implements vscode.TreeDataProvider<TagExplorerElt>{
 	private static readonly _onDidChangeTreeData = new vscode.EventEmitter<void>();
@@ -47,13 +58,19 @@ export default class TagExplorer implements vscode.TreeDataProvider<TagExplorerE
 
 		if (!element) {
 			const r = await shell.GetAllTags(workspace);
-			if (Array.isArray(r))
+			if (Array.isArray(r)){
+				r.push(nontag);
 				return r;
+			}
 			else
 				vscode.window.showErrorMessage(r.err?.message ?? "")
 		}
 		else if (typeof(element) === "string") {
-			const r = await shell.GetFilesForQuery(workspace, element);
+			let r;
+			if (element !== nontag)
+				r = await shell.GetFilesForQuery(workspace, element);
+			else
+				r = await shell.GetUntagged(workspace);
 			if (Array.isArray(r))
 				return r.map( uri=>new AttachedTag(uri, element) );
 			else vscode.window.showErrorMessage(r.err?.message ?? "");
@@ -63,7 +80,9 @@ export default class TagExplorer implements vscode.TreeDataProvider<TagExplorerE
 	getTreeItem(element: TagExplorerElt): vscode.TreeItem {
 		if (element instanceof AttachedTag)
 			return new FileItem(element);
-		else
+		else if (element !== nontag)
 			return new TagItem(element);
+		else 
+			return new UntaggedItem();
 	}
 }
