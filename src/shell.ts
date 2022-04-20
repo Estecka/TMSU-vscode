@@ -49,10 +49,11 @@ export async function GetTagsForFile(file:vscode.Uri): Promise<string[]|ExecResu
 }
 
 export async function GetFilesForQuery(context:vscode.Uri, query:string): Promise<vscode.Uri[]|ExecResult> {
-	const r = await TmsuExec(context, 'files', [query]);
+	const root = GetContext(context);
+	const r = await TmsuExec(root, 'files', [query]);
 	if (r.err)
 		return r;
-	return r.stdout.split('\n').filter(path=>path.trim()).map(path=>vscode.Uri.file(path));
+	return r.stdout.split('\n').filter(path=>path.trim()).map(file=>vscode.Uri.file(path.join(root, file)));
 }
 
 export async function GetAllTags(context:vscode.Uri) : Promise<string[]|ExecResult>{

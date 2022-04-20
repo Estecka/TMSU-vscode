@@ -11,6 +11,11 @@ class FileItem extends vscode.TreeItem {
 		super(tag.fileUri);
 		this.resourceUri = tag.fileUri;
 		this.id = `${tag.fileUri.fsPath}#${tag.tagName}`;
+		this.command = {
+			title: "Open file",
+			command: "vscode.open",
+			arguments: [tag.fileUri],
+		};
 	}
 }
 
