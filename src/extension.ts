@@ -2,6 +2,7 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import AddTag from './Commands/AddTag';
+import HideTags from './Commands/HideTags';
 import RemoveTag from './Commands/RemoveTag';
 import ShowTags from './Commands/ShowTags';
 import TagExplorer from './TreeView/TagExplorer';
@@ -21,6 +22,7 @@ export function activate(context: vscode.ExtensionContext) {
 	// The commandId parameter must match the command field in package.json
 	context.subscriptions.push(
 		vscode.commands.registerCommand('tmsu-gui.showTags', ShowTags),
+		vscode.commands.registerCommand('tmsu-gui.hideTags', HideTags),
 		vscode.commands.registerCommand('tmsu-gui.addTag', AddTag),
 		vscode.commands.registerCommand('tmsu-gui.removeTag', RemoveTag),
 		vscode.commands.registerCommand('tmsu-gui.refreshTagView', TagView.Refresh),

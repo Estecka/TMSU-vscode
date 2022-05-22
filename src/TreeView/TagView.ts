@@ -51,6 +51,8 @@ export default class TagView implements vscode.TreeDataProvider<TagViewElt>{
 	}
 	public static HideFile(file:vscode.Uri){
 		TagView._files.delete(file.fsPath);
+		if (TagView._preview == file)
+			TagView._preview = undefined;
 		TagView._onDidChangeTreeData.fire();
 	}
 

@@ -13,6 +13,7 @@
 		"onView:tmsu-gui.tagView",
 		"onView:tmsu-gui.tagExplorer",
 		"onCommand:tmsu-gui.showTags",
+		"onCommand:tmsu-gui.hideTags",
 		"onCommand:tmsu-gui.addTag"
 	],
 	"main": "./dist/extension.js",
@@ -21,7 +22,12 @@
 			{
 				"command": "tmsu-gui.showTags",
 				"title": "TMSU: Show tags",
-				"icon": "$(bookmark)"
+				"icon": "$(tag)"
+			},
+			{
+				"command": "tmsu-gui.hideTags",
+				"title": "TMSU: Show tags",
+				"icon": "$(close)"
 			},
 			{
 				"command": "tmsu-gui.open",
@@ -64,6 +70,11 @@
 				},
 				{
 					"command": "tmsu-gui.addTag",
+					"when": "viewItem == tmsu-gui.tagView.file",
+					"group": "inline"
+				},
+				{
+					"command": "tmsu-gui.hideTags",
 					"when": "viewItem == tmsu-gui.tagView.file",
 					"group": "inline"
 				}
