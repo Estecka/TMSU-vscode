@@ -40,6 +40,17 @@ export default class QueryExplorer implements vscode.TreeDataProvider<QueryExplo
 		QueryExplorer._onDidChangeTreeData.fire();
 	}
 
+	public static ShowQuery(query:string){
+		QueryExplorer._queries.add(query);
+		QueryExplorer._onDidChangeTreeData.fire();
+		vscode.commands.executeCommand("tmsu-gui.queryExplorer.focus");
+
+	}
+	public static HideQuery(query:string){
+		QueryExplorer._onDidChangeTreeData.fire();
+		QueryExplorer._queries.delete(query);
+	}
+
 	async getChildren(element?:QueryExplorerElt) : Promise<QueryExplorerElt[]|undefined> {
 		const workspace = vscode.workspace.workspaceFolders?.[0]?.uri;
 		if (!workspace){

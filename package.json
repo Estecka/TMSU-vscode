@@ -15,7 +15,8 @@
 		"onView:tmsu-gui.queryExplorer",
 		"onCommand:tmsu-gui.showTags",
 		"onCommand:tmsu-gui.hideTags",
-		"onCommand:tmsu-gui.addTag"
+		"onCommand:tmsu-gui.addTag",
+		"onCommand:tmsu-gui.showQuery"
 	],
 	"main": "./dist/extension.js",
 	"contributes": {
@@ -45,6 +46,16 @@
 				"icon": "$(trashcan)"
 			},
 			{
+				"command": "tmsu-gui.showQuery",
+				"title": "TMSU: Query",
+				"icon": "$(plus)"
+			},
+			{
+				"command": "tmsu-gui.hideQuery",
+				"title": "TMSU: Hide query",
+				"icon": "$(close)"
+			},
+			{
 				"command": "tmsu-gui.refreshTagView",
 				"title": "TMSU: Refresh Tag View",
 				"icon": "$(refresh)"
@@ -52,6 +63,11 @@
 			{
 				"command": "tmsu-gui.refreshTagExplorer",
 				"title": "TMSU: Refresh Tag Explorer",
+				"icon": "$(refresh)"
+			},
+			{
+				"command": "tmsu-gui.refreshQueryExplorer",
+				"title": "TMSU: Refresh Query Explorer",
 				"icon": "$(refresh)"
 			}
 		],
@@ -78,6 +94,11 @@
 					"command": "tmsu-gui.hideTags",
 					"when": "viewItem == tmsu-gui.tagView.file",
 					"group": "inline"
+				},
+				{
+					"command": "tmsu-gui.hideQuery",
+					"when": "viewItem == tmsu-gui.queryExplorer.query",
+					"group": "inline"
 				}
 			],
 			"view/title": [
@@ -89,6 +110,16 @@
 				{
 					"command": "tmsu-gui.refreshTagExplorer",
 					"when": "view == tmsu-gui.tagExplorer",
+					"group": "navigation"
+				},
+				{
+					"command": "tmsu-gui.refreshQueryExplorer",
+					"when": "view == tmsu-gui.queryExplorer",
+					"group": "navigation"
+				},
+				{
+					"command": "tmsu-gui.showQuery",
+					"when": "view == tmsu-gui.queryExplorer",
 					"group": "navigation"
 				}
 			]

@@ -4,6 +4,7 @@ import * as vscode from 'vscode';
 import AddTag from './Commands/AddTag';
 import HideTags from './Commands/HideTags';
 import RemoveTag from './Commands/RemoveTag';
+import ShowQuery from './Commands/ShowQuery';
 import ShowTags from './Commands/ShowTags';
 import QueryExplorer from './TreeView/QueryExplorer';
 import TagExplorer from './TreeView/TagExplorer';
@@ -26,8 +27,11 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand('tmsu-gui.hideTags', HideTags),
 		vscode.commands.registerCommand('tmsu-gui.addTag', AddTag),
 		vscode.commands.registerCommand('tmsu-gui.removeTag', RemoveTag),
+		vscode.commands.registerCommand('tmsu-gui.showQuery', ShowQuery),
+		vscode.commands.registerCommand('tmsu-gui.hideQuery', QueryExplorer.HideQuery),
 		vscode.commands.registerCommand('tmsu-gui.refreshTagView', TagView.Refresh),
 		vscode.commands.registerCommand('tmsu-gui.refreshTagExplorer', TagExplorer.Refresh),
+		vscode.commands.registerCommand('tmsu-gui.refreshQueryExplorer', QueryExplorer.Refresh),
 		vscode.window.registerTreeDataProvider("tmsu-gui.tagView", new TagView()),
 		vscode.window.registerTreeDataProvider("tmsu-gui.tagExplorer", new TagExplorer()),
 		vscode.window.registerTreeDataProvider("tmsu-gui.queryExplorer", new QueryExplorer()),
