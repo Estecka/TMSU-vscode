@@ -33,16 +33,15 @@ export function TmsuExec(context:vscode.Uri|string, verb:tmsuVerb, args:string[]
 	return Exec(command);
 }
 
-export function ParseTags(stdout:string, uri:vscode.Uri) : string[]|undefined{
-	if (!stdout.startsWith(uri.fsPath+":")){
-		console.warn("Expected:", uri.fsPath+":")
-		return undefined;
-	}
-	return stdout.substring(uri.fsPath.length + 1).split(' ').filter(t=>t.trim());
+export function ParseTags(stdout:string, uri:vscode.Uri) : string[]|undefined {
+	let tags = stdout.split('\n');
+	if (tags[0] == uri.fsPath+":")
+		tags.shift()
+	return tags.filter(t=>t.trim());
 }
 
 export async function GetTagsForFile(file:vscode.Uri): Promise<string[]|ExecResult> {
-	const r = await TmsuExec(file, 'tags', [file.fsPath]);
+	const r = await TmsuExec(file, 'tags', ['-1', file.fsPath]);
 	if (r.err)
 		return r;
 	return ParseTags(r.stdout, file) ?? r;
@@ -65,7 +64,7 @@ export async function GetUntagged(context:vscode.Uri): Promise<vscode.Uri[]|Exec
 }
 
 export async function GetAllTags(context:vscode.Uri) : Promise<string[]|ExecResult>{
-	const r = await TmsuExec(context, 'tags');
+	const r = await TmsuExec(context, 'tags', ['-1']);
 	if (r.err)
 		return r;
 	return r.stdout.split('\n').filter((tag)=>tag.trim());
