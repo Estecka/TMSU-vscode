@@ -12,6 +12,7 @@
 	"activationEvents": [
 		"onView:tmsu-gui.tagView",
 		"onView:tmsu-gui.tagExplorer",
+		"onView:tmsu-gui.queryExplorer",
 		"onCommand:tmsu-gui.showTags",
 		"onCommand:tmsu-gui.hideTags",
 		"onCommand:tmsu-gui.addTag"
@@ -101,6 +102,10 @@
 				{
 					"id": "tmsu-gui.tagExplorer",
 					"name": "TMSU Tag Explorer"
+				},
+				{
+					"id": "tmsu-gui.queryExplorer",
+					"name": "TMSU Query Explorer"
 				}
 			]
 		}
